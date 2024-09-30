@@ -50,10 +50,10 @@ const int motor1Pin1 = 3;
 const int motor1Pin2 = 4;
 const int motor2Pin1 = 5;
 const int motor2Pin2 = 6;
-const int motor3Pin1 = 7;
-const int motor3Pin2 = 8;
-const int motor4Pin1 = 9;
-const int motor4Pin2 = 10;
+// const int motor3Pin1 = 7;
+// const int motor3Pin2 = 8;
+// const int motor4Pin1 = 9;
+// const int motor4Pin2 = 10;
 
 // Set up color sensor
 Adafruit_TCS34725 tcs = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_50MS, TCS34725_GAIN_4X);
@@ -66,10 +66,10 @@ void setup() {
   pinMode(motor1Pin2, OUTPUT);
   pinMode(motor2Pin1, OUTPUT);
   pinMode(motor2Pin2, OUTPUT);
-  pinMode(motor3Pin1, OUTPUT);
-  pinMode(motor3Pin2, OUTPUT);
-  pinMode(motor4Pin1, OUTPUT);
-  pinMode(motor4Pin2, OUTPUT);
+  // pinMode(motor3Pin1, OUTPUT);
+  // pinMode(motor3Pin2, OUTPUT);
+  // pinMode(motor4Pin1, OUTPUT);
+  // pinMode(motor4Pin2, OUTPUT);
 
   if (tcs.begin()) {
     Serial.println("Found color sensor");
@@ -121,10 +121,10 @@ void moveForward() {
   digitalWrite(motor1Pin2, LOW);
   digitalWrite(motor2Pin1, HIGH);
   digitalWrite(motor2Pin2, LOW);
-  digitalWrite(motor3Pin1, HIGH);
-  digitalWrite(motor3Pin2, LOW);
-  digitalWrite(motor4Pin1, HIGH);
-  digitalWrite(motor4Pin2, LOW);
+  // digitalWrite(motor3Pin1, HIGH);
+  // digitalWrite(motor3Pin2, LOW);
+  // digitalWrite(motor4Pin1, HIGH);
+  // digitalWrite(motor4Pin2, LOW);
 }
 
 // Function to move all motors backward
@@ -133,10 +133,10 @@ void moveBackward() {
   digitalWrite(motor1Pin2, HIGH);
   digitalWrite(motor2Pin1, LOW);
   digitalWrite(motor2Pin2, HIGH);
-  digitalWrite(motor3Pin1, LOW);
-  digitalWrite(motor3Pin2, HIGH);
-  digitalWrite(motor4Pin1, LOW);
-  digitalWrite(motor4Pin2, HIGH);
+  // digitalWrite(motor3Pin1, LOW);
+  // digitalWrite(motor3Pin2, HIGH);
+  // digitalWrite(motor4Pin1, LOW);
+  // digitalWrite(motor4Pin2, HIGH);
 }
 
 // Function to turn left
@@ -145,10 +145,10 @@ void turnLeft() {
   digitalWrite(motor1Pin2, HIGH);
   digitalWrite(motor2Pin1, LOW);
   digitalWrite(motor2Pin2, HIGH);
-  digitalWrite(motor3Pin1, HIGH);
-  digitalWrite(motor3Pin2, LOW);
-  digitalWrite(motor4Pin1, HIGH);
-  digitalWrite(motor4Pin2, LOW);
+  // digitalWrite(motor3Pin1, HIGH);
+  // digitalWrite(motor3Pin2, LOW);
+  // digitalWrite(motor4Pin1, HIGH);
+  // digitalWrite(motor4Pin2, LOW);
 }
 
 // Function to stop all motors
@@ -157,8 +157,8 @@ void stopMotors() {
   digitalWrite(motor1Pin2, LOW);
   digitalWrite(motor2Pin1, LOW);
   digitalWrite(motor2Pin2, LOW);
-  digitalWrite(motor3Pin1, LOW);
-  digitalWrite(motor3Pin2, LOW);
-  digitalWrite(motor4Pin1, LOW);
-  digitalWrite(motor4Pin2, LOW);
+  // digitalWrite(motor3Pin1, LOW);
+  // digitalWrite(motor3Pin2, LOW);
+  // digitalWrite(motor4Pin1, LOW);
+  // digitalWrite(motor4Pin2, LOW);
 }
