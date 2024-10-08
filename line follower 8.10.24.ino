@@ -1,16 +1,16 @@
-#define ENA 10
-#define ENB 11
-#define IN1 7
-#define IN2 6
-#define IN3 5
-#define IN4 4
+#define ENA 23
+#define ENB 13
+#define IN1 32
+#define IN2 33
+#define IN3 25
+#define IN4 26
 
 
 // IR
 
-#define lefts 13
-#define middles 2
-#define rights 3
+#define lefts 36
+#define middles 39
+#define rights 35
 
 
 #define basespeed 150
