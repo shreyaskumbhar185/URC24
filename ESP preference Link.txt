@@ -1,0 +1,3 @@
+Put this link in preferences in IDE
+To upload code to ESP (ESP32 Dev module)
+https://dl.espressif.com/dl/package_esp32_index.json
