@@ -141,20 +141,20 @@ void loop() {
   if (distanceFront < 10) {
     stop();
     delay(500);
-    left();
+    left(150);
     delay(500);
   } 
   // If there's no right wall (open space), turn right
   else if (distanceRight > 12.5) {
     stop();
     delay(500);
-    right();
+    right(150);
     delay(500);
   } 
   // If there's a wall to the right, use PID control to follow it
   else {
     PIDControl(distanceRight);
-    forward();
+    forward(200);
   }
 
   delay(100); // Small delay to avoid sensor noise
