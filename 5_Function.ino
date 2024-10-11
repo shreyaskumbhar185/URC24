@@ -21,6 +21,17 @@ float error, lastError, integral, derivative;
 float controlSignal;
 unsigned long currentTime, lastTime;
 
+// Function to measure distance using ultrasonic sensor
+float getDistance(int trigPin, int echoPin) {
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+  float duration = pulseIn(echoPin, HIGH);
+  return (duration * 0.034) / 2; // Convert to cm
+}
+
 // Function declarations
 void function1();
 void function2();
@@ -28,10 +39,86 @@ void function3();
 void function4();
 void function5();
 
+// Motor control functions
+void stop() {
+  analogWrite(ENA, 0);
+  analogWrite(ENB, 0);
+
+}
+
+void forward(int speed) {
+  digitalWrite(IN1, 1);
+  digitalWrite(IN2, 0);
+  digitalWrite(IN3, 1);
+  digitalWrite(IN4, 0);
+  analogWrite(ENA, speed);  // Speed for motor 1
+  analogWrite(ENB, speed);  // Speed for motor 2
+
+}
+
+void backward(int speed) {
+  digitalWrite(IN1, 0);
+  digitalWrite(IN2, 1);
+  digitalWrite(IN3, 0);
+  digitalWrite(IN4, 1);
+  analogWrite(ENA, speed);  // Speed for motor 1
+  analogWrite(ENB, speed);
+
+}
+
+void left(int speed) {
+  digitalWrite(IN1, 1); 
+  digitalWrite(IN2, 0);
+  digitalWrite(IN3, 1);
+  digitalWrite(IN4, 0);
+  analogWrite(ENA, speed/2 );  // Half speed for motor 1 (left)
+  analogWrite(ENB, speed); 
+
+}
+
+void right(int speed) {
+  digitalWrite(IN1, 1);
+  digitalWrite(IN2, 0);
+  digitalWrite(IN3, 1);
+  digitalWrite(IN4, 0);
+  analogWrite(ENA, speed);      // Full speed for motor 1 (left)
+  analogWrite(ENB, speed/2 );
+}
+
+// PID controller for right sensor
+void PIDControl(float distanceRight) {
+  currentTime = millis();
+  float deltaTime = (currentTime - lastTime) / 1000.0;
+
+  // Calculate error
+  error = setPoint - distanceRight;
+  integral += error * deltaTime;
+  derivative = (error - lastError) / deltaTime;
+
+  // Calculate control signal
+  controlSignal = Kp * error + Ki * integral + Kd * derivative;
+
+  // Adjust motor speeds based on control signal
+  if (controlSignal > 0) {
+    // Turn slightly left
+    digitalWrite(IN1, LOW); // Slow down left motor
+    digitalWrite(IN3, HIGH); // Keep right motor running
+  } else {
+    // Turn slightly right
+    digitalWrite(IN1, HIGH); // Keep left motor running
+    digitalWrite(IN3, LOW); // Slow down right motor
+  }
+
+  // Update variables for next iteration
+  lastError = error;
+  lastTime = currentTime;
+}
+
 void setup() {
   // Initialize serial for debugging
   Serial.begin(115200);
-
+  lastTime = millis();
+  
   // Initialize PS3 Controller
   Ps3.attach(notify);             // Attach callback function for button events
   Ps3.attachOnConnect(onConnect); // Attach onConnect function (optional)
@@ -40,6 +127,12 @@ void setup() {
   Serial.println("System Initialized. Waiting for PS3 Controller...");
 
   // Initialize pins for functions
+  pinMode(trigPinFront, OUTPUT);
+  pinMode(echoPinFront, INPUT);
+  pinMode(trigPinRight, OUTPUT);
+  pinMode(echoPinRight, INPUT);
+  pinMode(trigPinLeft, OUTPUT);
+  pinMode(echoPinLeft, INPUT);
   pinMode(IN1, OUTPUT);
   pinMode(IN2, OUTPUT);
   pinMode(IN3, OUTPUT);
@@ -84,8 +177,41 @@ void function1() {
 
 // Function 2 (triggered by O/Circle)
 void function2() {
+
   Serial.println("Function 2 executed");
   // Your code for function 2
+  float distanceFront = getDistance(trigPinFront, echoPinFront);
+  float distanceRight = getDistance(trigPinRight, echoPinRight);
+  float distanceLeft = getDistance(trigPinLeft, echoPinLeft);
+
+  Serial.print("Front: ");
+  Serial.print(distanceFront);
+  Serial.print(" Right: ");
+  Serial.print(distanceRight);
+  Serial.print(" Left: ");
+  Serial.println(distanceLeft);
+
+  // If front is blocked, turn left
+  if (distanceFront < 10) {
+    stop();
+    delay(500);
+    left(150);
+    delay(500);
+  } 
+  // If there's no right wall (open space), turn right
+  else if (distanceRight > 12.5) {
+    stop();
+    delay(500);
+    right(150);
+    delay(500);
+  } 
+  // If there's a wall to the right, use PID control to follow it
+  else {
+    PIDControl(distanceRight);
+    forward(200);
+  }
+
+  delay(100); // Small delay to avoid sensor noise
 }
 
 // Function 3 (triggered by Square)
