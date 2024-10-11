@@ -39,52 +39,6 @@ void function3();
 void function4();
 void function5();
 
-// Motor control functions
-void stop() {
-  analogWrite(ENA, 0);
-  analogWrite(ENB, 0);
-
-}
-
-void forward(int speed) {
-  digitalWrite(IN1, 1);
-  digitalWrite(IN2, 0);
-  digitalWrite(IN3, 1);
-  digitalWrite(IN4, 0);
-  analogWrite(ENA, speed);  // Speed for motor 1
-  analogWrite(ENB, speed);  // Speed for motor 2
-
-}
-
-void backward(int speed) {
-  digitalWrite(IN1, 0);
-  digitalWrite(IN2, 1);
-  digitalWrite(IN3, 0);
-  digitalWrite(IN4, 1);
-  analogWrite(ENA, speed);  // Speed for motor 1
-  analogWrite(ENB, speed);
-
-}
-
-void left(int speed) {
-  digitalWrite(IN1, 1); 
-  digitalWrite(IN2, 0);
-  digitalWrite(IN3, 1);
-  digitalWrite(IN4, 0);
-  analogWrite(ENA, speed/2 );  // Half speed for motor 1 (left)
-  analogWrite(ENB, speed); 
-
-}
-
-void right(int speed) {
-  digitalWrite(IN1, 1);
-  digitalWrite(IN2, 0);
-  digitalWrite(IN3, 1);
-  digitalWrite(IN4, 0);
-  analogWrite(ENA, speed);      // Full speed for motor 1 (left)
-  analogWrite(ENB, speed/2 );
-}
-
 // PID controller for right sensor
 void PIDControl(float distanceRight) {
   currentTime = millis();
@@ -237,3 +191,53 @@ void onConnect() {
   Serial.println("PS3 Controller connected");
 }
 //Switch Case made by Yashodhan K 
+
+// Motor control functions
+//            motor left                    motor right
+//               ENA                            ENB
+//               IN1 (A)                        IN3 (A)   
+//               IN2 (C)                        IN4 (C)  
+void stop() {
+  analogWrite(ENA, 0);
+  analogWrite(ENB, 0);
+
+}
+
+void forward(int speed) {
+  digitalWrite(IN1, 1);
+  digitalWrite(IN2, 0);
+  digitalWrite(IN3, 1);
+  digitalWrite(IN4, 0);
+  analogWrite(ENA, speed);  // Speed for motor 1
+  analogWrite(ENB, speed);  // Speed for motor 2
+
+}
+
+void backward(int speed) {
+  digitalWrite(IN1, 0);
+  digitalWrite(IN2, 1);
+  digitalWrite(IN3, 0);
+  digitalWrite(IN4, 1);
+  analogWrite(ENA, speed);  // Speed for motor 1
+  analogWrite(ENB, speed);
+
+}
+
+void left(int speed) {
+  digitalWrite(IN1, 1); 
+  digitalWrite(IN2, 0);
+  digitalWrite(IN3, 1);
+  digitalWrite(IN4, 0);
+  analogWrite(ENA, speed/2 );  // Half speed for motor 1 (left)
+  analogWrite(ENB, speed); 
+
+}
+
+void right(int speed) {
+  digitalWrite(IN1, 1);
+  digitalWrite(IN2, 0);
+  digitalWrite(IN3, 1);
+  digitalWrite(IN4, 0);
+  analogWrite(ENA, speed);      // Full speed for motor 1 (left)
+  analogWrite(ENB, speed/2 );
+}
