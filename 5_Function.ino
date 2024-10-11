@@ -1,18 +1,24 @@
 #include <Ps3Controller.h>
 
 // Pin Definitions
+//HCSR04
 #define trigPinFront 18
 #define echoPinFront 19
 #define trigPinRight 17
 #define echoPinRight 5
 #define trigPinLeft 4
 #define echoPinLeft 16
+//L298N
 #define ENA 23
 #define ENB 13
 #define IN1 32
 #define IN2 33
 #define IN3 25
 #define IN4 26
+//IR
+#define lefts 36
+#define middles 39
+#define rights 35
 
 // PID Constants (if relevant for your control system)
 float Kp = 1.5, Ki = 0.1, Kd = 0.3;
@@ -81,12 +87,18 @@ void setup() {
   Serial.println("System Initialized. Waiting for PS3 Controller...");
 
   // Initialize pins for functions
+  //HCSR04
   pinMode(trigPinFront, OUTPUT);
   pinMode(echoPinFront, INPUT);
   pinMode(trigPinRight, OUTPUT);
   pinMode(echoPinRight, INPUT);
   pinMode(trigPinLeft, OUTPUT);
   pinMode(echoPinLeft, INPUT);
+  //IR
+  pinMode(lefts,INPUT);
+  pinMode(middles,INPUT);
+  pinMode(rights,INPUT);
+  //L298N
   pinMode(IN1, OUTPUT);
   pinMode(IN2, OUTPUT);
   pinMode(IN3, OUTPUT);
@@ -97,6 +109,7 @@ void setup() {
 
 void loop() {
   // Main loop can handle other tasks if needed
+  notify();
 }
 
 // Callback function to handle button events
@@ -127,6 +140,47 @@ void notify() {
 void function1() {
   Serial.println("Function 1 executed");
   // Your code for function 1
+  int middleval = digitalRead(middles);
+  int leftval = digitalRead(lefts);
+  int rightval = digitalRead(rights);
+  
+  Serial.print("Left Sensor: ");
+  Serial.print(leftval);
+  Serial.print(" | Center Sensor: ");
+  Serial.print(middleval);
+  Serial.print(" | Right Sensor: ");
+  Serial.println(rightval);
+  
+  if (middleval==1 && leftval==0 && rightval==0){
+  //error = 0;
+  forward(200);
+  }
+  else if(leftval==1 && middleval==0 && rightval==0) {
+  //error = -2;
+  left(200);
+  }
+  else if(leftval==1 && middleval==1 && rightval==0) {
+  //error = -1;
+  left(150);
+  }
+  else if (rightval==1 && leftval==0 && middleval==0) { 
+  //error = 21;
+  right(200);
+  }
+  else if (rightval==1 && leftval==1 && middleval==0) { 
+  //error = +1;
+  right(150);
+  }
+  else if(rightval==1 && leftval==1 && middleval==1){
+  right(125);
+  delay(500);
+  forward(100);
+  delay(50);
+  }
+  else{     
+  //error= previous_error;
+  backward(100);
+  }
 }
 
 // Function 2 (triggered by O/Circle)
