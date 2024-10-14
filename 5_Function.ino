@@ -1,4 +1,5 @@
 #include <Ps3Controller.h>
+#include <ESP32Servo.h>
 
 // Pin Definitions
 //HCSR04
@@ -19,6 +20,9 @@
 #define lefts 36
 #define middles 39
 #define rights 35
+// Servo Pins
+#define SERVO_PIN 13
+#define SERVO_PIN2 14
 
 // PID Constants (if relevant for your control system)
 float Kp = 1.5, Ki = 0.1, Kd = 0.3;
@@ -26,6 +30,20 @@ float setPoint = 20.0;
 float error, lastError, integral, derivative;
 float controlSignal;
 unsigned long currentTime, lastTime;
+
+// Create servo objects
+Servo srvmtr;
+Servo srvmtr2;
+
+// Controller Joystick Values
+int leftX;
+int leftY;
+int rightX;
+int rightY;
+
+// Separate servo positions for each motor
+int servoPos1 = 90;
+int servoPos2 = 90;
 
 // Function to measure distance using ultrasonic sensor
 float getDistance(int trigPin, int echoPin) {
@@ -105,6 +123,17 @@ void setup() {
   pinMode(IN4, OUTPUT);
   pinMode(ENA, OUTPUT);
   pinMode(ENB, OUTPUT);
+
+  // Attach servos to pins
+  srvmtr.attach(SERVO_PIN);
+  srvmtr2.attach(SERVO_PIN2);
+
+  // Home both servos at 90 degrees
+  srvmtr.write(servoPos1);
+  srvmtr2.write(servoPos2);
+
+  // Print to Serial Monitor
+  Serial.println("Ready.");
 }
 
 void loop() {
@@ -134,6 +163,7 @@ void notify() {
   else if (Ps3.event.button_down.r1) {
     function5();
   }
+
 }
 
 // Function 1 (triggered by X)
@@ -226,6 +256,65 @@ void function2() {
 void function3() {
   Serial.println("Function 3 executed");
   // Your code for function 3
+  if (!Ps3.isConnected())
+    return;
+  delay(2000);
+  // Get joystick values
+  leftX = Ps3.data.analog.stick.lx;
+  leftY = Ps3.data.analog.stick.ly;
+  rightX = Ps3.data.analog.stick.rx;
+  rightY = Ps3.data.analog.stick.ry;
+
+  // Control first servo based on left stick
+  if (leftY < -100) {
+    servoPos1 = 90;
+    srvmtr.write(servoPos1);
+    delay(10);
+  } else {
+    if (leftX < -10 && servoPos1 < 180) {
+      servoPos1++;
+      srvmtr.write(servoPos1);
+      delay(10);
+    }
+    if (leftX > 10 && servoPos1 > 0) {
+      servoPos1--;
+      srvmtr.write(servoPos1);
+      delay(10);
+    }
+  }
+
+  // Control second servo based on right stick
+  if (rightY < -100) {
+    servoPos2 = 90;
+    srvmtr2.write(servoPos2);
+    delay(10);
+  } else {
+    if (rightX < -10 && servoPos2 < 180) {
+      servoPos2++;
+      srvmtr2.write(servoPos2);
+      delay(10);
+    }
+    if (rightX > 10 && servoPos2 > 0) {
+      servoPos2--;
+      srvmtr2.write(servoPos2);
+      delay(10);
+    }
+  }
+
+  // Print to Serial Monitor for debugging
+  Serial.print("1X value = ");
+  Serial.print(leftX);
+  Serial.print(" - 1Y value = ");
+  Serial.print(leftY);
+  Serial.print(" - 1Servo Pos = ");
+  Serial.println(servoPos1);
+
+  Serial.print("2X value = ");
+  Serial.print(rightX);
+  Serial.print(" - 2Y value = ");
+  Serial.print(rightY);
+  Serial.print(" - 2Servo Pos = ");
+  Serial.println(servoPos2);
 }
 
 // Function 4 (triggered by Triangle)
