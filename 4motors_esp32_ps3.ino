@@ -5,12 +5,12 @@
 // ========================
 
 // First L298N Module (Motor 1 & Motor 2)
-#define ENA1_PIN 22   // PWM pin for Motor 1
-#define IN1_1_PIN 18  // Direction pin 1 for Motor 1
-#define IN2_1_PIN 5   // Direction pin 2 for Motor 1
-#define ENB1_PIN 23   // PWM pin for Motor 2
-#define IN3_1_PIN 19  // Direction pin 1 for Motor 2
-#define IN4_1_PIN 21  // Direction pin 2 for Motor 2
+#define ENA 22   // PWM pin for Motor 1
+#define IN1 18  // Direction pin 1 for Motor 1
+#define IN2 5   // Direction pin 2 for Motor 1
+#define ENB 23   // PWM pin for Motor 2
+#define IN3 19  // Direction pin 1 for Motor 2
+#define IN4 21  // Direction pin 2 for Motor 2
 
 // Second L298N Module (Motor 3 & Motor 4)
 #define ENA2_PIN 25   // PWM pin for Motor 3
@@ -181,23 +181,23 @@ void driveMotors(int m1, int m2, int m3, int m4,
                 bool dir1, bool dir2, bool dir3, bool dir4) {
   // Motor 1 Control
   if (!dir1) {
-    digitalWrite(IN1_1_PIN, HIGH);
-    digitalWrite(IN2_1_PIN, LOW);
+    digitalWrite(IN1, HIGH);
+    digitalWrite(IN2, LOW);
   }
   else {
-    digitalWrite(IN1_1_PIN, LOW);
-    digitalWrite(IN2_1_PIN, HIGH);
+    digitalWrite(IN1, LOW);
+    digitalWrite(IN2, HIGH);
   }
   ledcWrite(motor1Channel, m1);
 
   // Motor 2 Control
   if (!dir2) {
-    digitalWrite(IN3_1_PIN, HIGH);
-    digitalWrite(IN4_1_PIN, LOW);
+    digitalWrite(IN3, HIGH);
+    digitalWrite(IN4, LOW);
   }
   else {
-    digitalWrite(IN3_1_PIN, LOW);
-    digitalWrite(IN4_1_PIN, HIGH);
+    digitalWrite(IN3, LOW);
+    digitalWrite(IN4, HIGH);
   }
   ledcWrite(motor2Channel, m2);
 
@@ -234,12 +234,12 @@ void setup() {
 
   // Initialize motor control pins as OUTPUT
   // First L298N Module
-  pinMode(ENA1_PIN, OUTPUT);
-  pinMode(IN1_1_PIN, OUTPUT);
-  pinMode(IN2_1_PIN, OUTPUT);
-  pinMode(ENB1_PIN, OUTPUT);
-  pinMode(IN3_1_PIN, OUTPUT);
-  pinMode(IN4_1_PIN, OUTPUT);
+  pinMode(ENB, OUTPUT);
+  pinMode(IN1, OUTPUT);
+  pinMode(IN2, OUTPUT);
+  pinMode(ENB, OUTPUT);
+  pinMode(IN3, OUTPUT);
+  pinMode(IN4, OUTPUT);
 
   // Second L298N Module
   pinMode(ENA2_PIN, OUTPUT);
@@ -256,8 +256,8 @@ void setup() {
   ledcSetup(motor4Channel, motorFreq, motorResolution);
 
   // Attach PWM channels to respective GPIO pins
-  ledcAttachPin(ENA1_PIN, motor1Channel);
-  ledcAttachPin(ENB1_PIN, motor2Channel);
+  ledcAttachPin(ENB, motor1Channel);
+  ledcAttachPin(ENB, motor2Channel);
   ledcAttachPin(ENA2_PIN, motor3Channel);
   ledcAttachPin(ENB2_PIN, motor4Channel);
 
