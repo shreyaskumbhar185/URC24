@@ -1,3 +1,4 @@
+
 #include <Ps3Controller.h>
 #include <ESP32Servo.h>
 
@@ -201,15 +202,17 @@ void function1() {
   //error = +1;
   right(150);
   }
-  else if(rightval==1 && leftval==1 && middleval==1){
-  right(125);
-  delay(500);
-  forward(100);
-  delay(50);
-  }
+  // else if(rightval==1 && leftval==1 && middleval==1){
+  // right(125);
+  // delay(500);
+  // forward(100);
+  // delay(50);
+  // }
   else{     
   //error= previous_error;
   backward(100);
+  delay(500);
+  stop();
   }
 }
 
@@ -321,6 +324,47 @@ void function3() {
 void function4() {
   Serial.println("Function 4 executed");
   // Your code for function 4
+  int middleval = digitalRead(middles);
+int leftval = digitalRead(lefts);
+int rightval = digitalRead(rights);
+
+Serial.print("Left Sensor: ");
+Serial.print(leftval);
+Serial.print(" | Center Sensor: ");
+Serial.print(middleval);
+Serial.print(" | Right Sensor: ");
+Serial.println(rightval);
+
+if (middleval==0 && leftval==1 && rightval==1){
+  //error = 0;
+  forward(200);
+}
+else if(leftval==0 && middleval==1 && rightval==1) {
+  //error = -2;
+  left(200);
+}
+else if(leftval==0 && middleval==0 && rightval==1) {
+  //error = -1;
+  left(150);
+}
+else if (rightval==0 && leftval==1 && middleval==1) { 
+  //error = 21;
+  right(200);
+}
+else if (rightval==0 && leftval==0 && middleval==1) { 
+  //error = +1;
+  right(150);
+}
+else if(rightval==0 && leftval==0 && middleval==0){
+  right(125);
+  delay(500);
+  forward(100);
+  delay(50);
+}
+else{     
+  //error= previous_error;
+  backward(100);
+  
 }
 
 // Function 5 (triggered by R1)
