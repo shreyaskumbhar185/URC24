@@ -1,16 +1,16 @@
 // Pin Definitions
-#define trigPinFront 18
-#define echoPinFront 19
-#define trigPinRight 17
-#define echoPinRight 5
+#define trigPinFront 17
+#define echoPinFront 5
+#define trigPinRight 18
+#define echoPinRight 19
 #define trigPinLeft 4
 #define echoPinLeft 16
-#define ENA 23
-#define ENB 13
+#define ENA 13
+#define ENB 14
 #define IN1 32
-#define IN2 33
+#define IN2 26
 #define IN3 25
-#define IN4 26
+#define IN4 33
 
 // PID Constants
 float Kp = 1.5, Ki = 0.1, Kd = 0.3;
