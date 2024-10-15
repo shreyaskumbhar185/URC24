@@ -13,9 +13,9 @@ const int motor2Pin2 = 6; // IN4
 Adafruit_TCS34725 tcs = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_50MS, TCS34725_GAIN_4X);
 
 // Thresholds for red detection
-const int redThreshold = 100;   // Adjust as needed
-const int greenThreshold = 70;  // Adjust as needed
-const int blueThreshold = 70;   // Adjust as needed
+const int redThreshold = 120;   // Adjust as needed
+const int greenThreshold = 80;  // Adjust as needed
+const int blueThreshold = 80;   // Adjust as needed
 
 void setup() {
   Serial.begin(9600);
@@ -70,7 +70,37 @@ void loop() {
 
   delay(100);  // Short delay to stabilize sensor readings
 }   
+//   // Motor control logic based on color detection
+//   if (b > blueThreshold && b > g && b > r) {
+//     int speed = map(b, blueThreshold, 255, 150, 255);  // Map red intensity to speed
+//     moveForward(speed);
+//     Serial.println("blue detected: Moving forward");
+//   } else if (b < bluethreshold) {
+//     turnLeft();
+//     Serial.println("No blue detected: Turning left");
+//   } else {
+//     turnRight();
+//     Serial.println("Weak blue detected: Turning right");
+//   }
 
+//   delay(100);  // Short delay to stabilize sensor readings
+// }   
+   
+//   // Motor control logic based on color detection
+//   if (g > greenThreshold && g > b && g > r) {
+//     int speed = map(green, greenThreshold, 255, 150, 255);  // Map red intensity to speed
+//     moveForward(speed);
+//     Serial.println("green  detected: Moving forward");
+//   } else if (g < greenthreshold) {
+//     turnLeft();
+//     Serial.println("No green detected: Turning left");
+//   } else {
+//     turnRight();
+//     Serial.println("Weak green detected: Turning right");
+//   }
+
+//   delay(100);  // Short delay to stabilize sensor readings
+// }   
 // Motor control functions
 void moveForward(int speed) {
   analogWrite(ENA, speed);
