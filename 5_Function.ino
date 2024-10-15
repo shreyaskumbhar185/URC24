@@ -1,4 +1,3 @@
-
 #include <Ps3Controller.h>
 #include <ESP32Servo.h>
 
@@ -58,11 +57,11 @@ float getDistance(int trigPin, int echoPin) {
 }
 
 // Function declarations
-void function1();
-void function2();
-void function3();
-void function4();
-void function5();
+void function1(); // control pathway
+void function2(); // maze solver right side first
+void function3(); // arm control
+void function4(); // line follower
+void function5(); // colour line follwer
 
 // PID controller for right sensor
 void PIDControl(float distanceRight) {
@@ -213,6 +212,7 @@ void function1() {
   backward(100);
   delay(500);
   stop();
+  delay(500);
   }
 }
 
@@ -236,14 +236,14 @@ void function2() {
   if (distanceFront < 10) {
     stop();
     delay(500);
-    left(150);
+    left(1000);
     delay(500);
   } 
   // If there's no right wall (open space), turn right
   else if (distanceRight > 12.5) {
     stop();
     delay(500);
-    right(150);
+    right(1000);
     delay(500);
   } 
   // If there's a wall to the right, use PID control to follow it
