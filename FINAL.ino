@@ -504,13 +504,13 @@ void function5() {
   // Motor control logic based on color detection
   if (r > redThreshold && r > g && r > b) {
     int speed = map(r, redThreshold, 255, 150, 255);  // Map red intensity to speed
-    moveForward(speed);
+    forward(speed);
     Serial.println("Red detected: Moving forward");
   } else if (r < redThreshold) {
-    turnLeft();
+    left();
     Serial.println("No red detected: Turning left");
   } else {
-    turnRight();
+    right();
     Serial.println("Weak red detected: Turning right");
   }
 
