@@ -500,21 +500,21 @@ void function5() {
   Serial.print(" G: "); Serial.print(green); 
   Serial.print(" B: "); Serial.println(blue);
 
-  // Control motors based on color
-  if (red > green && red > blue) {
-    forward(255);  // Move forward with full speed
-    Serial.println("Moving forward (Red detected)");
-  } else if (green > red && green > blue) {
-    backward(255);  // Move backward with full speed
-    Serial.println("Moving backward (Green detected)");
-  } else if (blue > red && blue > green) {
-    left(255);  // Turn left with full speed
-    Serial.println("Turning left (Blue detected)");
+  
+  // Motor control logic based on color detection
+  if (r > redThreshold && r > g && r > b) {
+    int speed = map(r, redThreshold, 255, 150, 255);  // Map red intensity to speed
+    moveForward(speed);
+    Serial.println("Red detected: Moving forward");
+  } else if (r < redThreshold) {
+    turnLeft();
+    Serial.println("No red detected: Turning left");
   } else {
-    stop();
-    Serial.println("Motors stopped");
+    turnRight();
+    Serial.println("Weak red detected: Turning right");
   }
 
+  
   delay(500);  // Wait before next color detection
 }
 
