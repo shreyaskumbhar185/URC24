@@ -72,6 +72,7 @@ else{
   //error= previous_error;
   backward(100);
 }
+}
 
 //            motor left                    motor right
 //               ENA                            ENB
